@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 6567640086605365786}
   - component: {fileID: 6567640086605365782}
   - component: {fileID: 4208273469490449233}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: PlayerBullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -405,6 +405,7 @@ MonoBehaviour:
   clip:
   - {fileID: 8300000, guid: f3741fb4b4d4d1b4da82ac9d7a333859, type: 3}
   - {fileID: 8300000, guid: 2a4e22f6b4a138645a0ee457243dfd61, type: 3}
+  screenShakeTime: 0.35
 --- !u!114 &4208273469490449233
 MonoBehaviour:
   m_ObjectHideFlags: 0

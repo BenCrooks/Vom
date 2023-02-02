@@ -9,6 +9,7 @@ TagManager:
   - Spawnable
   - Bullet
   - Environment
+  - DecorativeTerrain
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Terrain
   - Worm
   - BulletSubCollider
-  - 
+  - DecorativeTerrain
   - 
   - 
   - 

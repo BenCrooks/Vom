@@ -15,6 +15,7 @@ public class PlayerBullet : MonoBehaviour
     private GameObject ScreenShakeManager;
     [SerializeField]private GameObject quickPlayAudio;
     [SerializeField] private AudioClip[] clip;
+    [SerializeField] private float screenShakeTime = 0.19f;
 
     // Start is called before the first frame update
     void Start()
@@ -55,7 +56,7 @@ public class PlayerBullet : MonoBehaviour
                         if(ScreenShakeManager!=null){
                             if(GetComponent<Rigidbody2D>()!=null){
                                 Vector2 vel = GetComponent<Rigidbody2D>().velocity.normalized;
-                                ScreenShakeManager.GetComponent<ManageScreenShakeObjects>().ShakeAll(0.19f,vel);
+                                ScreenShakeManager.GetComponent<ManageScreenShakeObjects>().ShakeAll(screenShakeTime,vel);
                             }
                         }
                         Destroy(this.gameObject);

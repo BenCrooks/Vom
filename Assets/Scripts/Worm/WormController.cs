@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class WormController : MonoBehaviour
 {
-    private Vector2 facingDirection = new Vector2(0,1), cameFromDirection= new Vector2(0,-1);
+    private Vector2 facingDirection =  Vector2.up, cameFromDirection= Vector2.down;
     [SerializeField] private float moveSpeed;
     [SerializeField] private GameObject WormPiece;
     [SerializeField] private Sprite WormStraight1, WormStraight2, WormCorner1, WormCorner2;
@@ -13,7 +13,7 @@ public class WormController : MonoBehaviour
     private float DistanceToMove = 0.3f;
     [SerializeField] private GameObject[] animators;
     private bool cornering = false, lastUpwards=true, firstWormPiece = true, turningRight;
-    private Vector2 lastAngle=new Vector2(0,1);
+    private Vector2 lastAngle= Vector2.up;
     [SerializeField] private GameObject wormDetails, Terrain;
     private GameObject[] WormBits = new GameObject[170];
     private int wormBitCount=0, wormBitTotal;
@@ -34,13 +34,13 @@ public class WormController : MonoBehaviour
 
     public void initiateFirstBlock(){
         firstWormPiece=true;
-        GameObject first = Instantiate(WormPiece,transform.position - new Vector3(0,0,0), animators[0].transform.rotation);
+        GameObject first = Instantiate(WormPiece,transform.position, animators[0].transform.rotation);
         first.GetComponent<SpriteRenderer>().material = animators[0].GetComponent<SpriteRenderer>().material;
         WormBits[0] = first;
         RayAndDestroyBlocks();
-        wormDetails.transform.localScale = new Vector3(1,1,1);
-        wormDetails.transform.rotation = Quaternion.Euler(0,0,0);
-        lastAngle =new Vector2(0,1);
+        wormDetails.transform.localScale = Vector3.one;
+        wormDetails.transform.rotation = Quaternion.identity;
+        lastAngle = Vector2.up;
         facingDirection = lastAngle;
         lastUpwards=true;
         GetComponent<AudioSource>().volume =1f;
@@ -80,114 +80,152 @@ public class WormController : MonoBehaviour
         }
     }
     private void Move(){
-        if(canMove){
-            if(firstWormPiece){
-                firstWormPiece=false;
-                wormDetails.SetActive(true);
-                wormDetails.transform.GetChild(1).GetComponent<SpriteRenderer>().material = animators[0].GetComponent<SpriteRenderer>().material;
+        if(!canMove)return;
+
+        if(firstWormPiece){
+            firstWormPiece=false;
+            wormDetails.SetActive(true);
+            wormDetails.transform.GetChild(1).GetComponent<SpriteRenderer>().material = animators[0].GetComponent<SpriteRenderer>().material;
+        }else{
+            UpdateWormDirection();
+
+            GameObject wrmPce = Instantiate(WormPiece,transform.position - new Vector3(0,0,0), animators[0].transform.rotation);
+            wrmPce.GetComponent<SpriteRenderer>().material = animators[0].GetComponent<SpriteRenderer>().material;
+            wormBitCount++;
+            WormBits[wormBitCount] = wrmPce;
+            if(wormBitCount == wormBitTotal)
+            {
+                DestroyAllWormBits();
             }else{
-                if(Mathf.Abs(lastAngle.y)>Mathf.Abs(lastAngle.x)){
-                    cornering=!lastUpwards;
-                    lastUpwards=true;
-                    if(lastAngle.y < 0.01f){
-                        RotateSprites(180);
-                    }else{
-                        RotateSprites(0);
-                    }
-                }else{
-                    cornering=lastUpwards;
-                    lastUpwards=false;
-                    if(lastAngle.x < 0f){
-                        RotateSprites(90);
-                        SpriteFlip(true);
-                    }else{
-                        RotateSprites(-90);
-                        SpriteFlip(false);
-                    }
-                }
                 if(cornering){
-                    if(tempAudio!=null){
-                        GameObject qp = Instantiate(tempAudio,transform.position,Quaternion.identity);
-                        qp.GetComponent<PlayAudioAndDelete>().clip = turningSound;
-                        qp.GetComponent<AudioSource>().pitch += Random.Range(-0.15f,0.15f);
-                    }
-                    if(Mathf.Abs(-1*cameFromDirection.y)>Mathf.Abs(-1*cameFromDirection.x)){
-                        if(lastAngle.x>0){
-                            turningRight = -1*cameFromDirection.y>0;
-                        }else{
-                            turningRight = -1*cameFromDirection.y<0;
-                        }
-                    }else{
-                        if(lastAngle.y>0){
-                            turningRight = -1*cameFromDirection.x<0;
-                        }else{
-                            turningRight = -1*cameFromDirection.x>0;
-                        }
-                    }
-                }
-                GameObject wrmPce = Instantiate(WormPiece,transform.position - new Vector3(0,0,0), animators[0].transform.rotation);
-                wrmPce.GetComponent<SpriteRenderer>().material = animators[0].GetComponent<SpriteRenderer>().material;
-                wormBitCount++;
-                WormBits[wormBitCount] = wrmPce;
-                if(wormBitCount == wormBitTotal)
-                {
-                    DestroyAllWormBits();
-                }else{
-                    if(cornering){
-                        float turnangle = 0;
-                        if(Mathf.Abs(lastAngle.x) > Mathf.Abs(lastAngle.y)){
-                            if(lastAngle.x<0)
-                            {
-                                if(turningRight){
-                                    turnangle = 270;
-                                }else{
-                                    turnangle = 0;
-                                }
+                    float turnangle = 0;
+                    if(Mathf.Abs(lastAngle.x) > Mathf.Abs(lastAngle.y)){
+                        if(lastAngle.x<0)
+                        {
+                            if(turningRight){
+                                turnangle = 270;
                             }else{
-                                if(turningRight){
-                                    turnangle = 90;
-                                }else{
-                                    turnangle = 180;
-                                }
+                                turnangle = 0;
                             }
                         }else{
-                            //turning vertical
-                            if(lastAngle.y<0)
-                            {
-                                if(turningRight){
-                                    turnangle = 0;
-                                }else{
-                                    turnangle = 90;
-                                }
+                            if(turningRight){
+                                turnangle = 90;
                             }else{
-                                if(turningRight){
-                                    turnangle = 180;
-                                }else{
-                                    turnangle = -90;
-                                }
-                            }                }
-                        wrmPce.transform.rotation = Quaternion.Euler(0,0,turnangle);
-                        if(Random.Range(0f,1f)<0.5f){
-                            wrmPce.GetComponent<SpriteRenderer>().sprite = WormCorner1;
-                        }else{
-                            wrmPce.GetComponent<SpriteRenderer>().sprite = WormCorner2;
+                                turnangle = 180;
+                            }
                         }
                     }else{
-                        if(Random.Range(0f,1f)<0.5f){
-                            wrmPce.GetComponent<SpriteRenderer>().sprite = WormStraight1;
+                        //turning vertical
+                        if(lastAngle.y<0)
+                        {
+                            if(turningRight){
+                                turnangle = 0;
+                            }else{
+                                turnangle = 90;
+                            }
                         }else{
-                            wrmPce.GetComponent<SpriteRenderer>().sprite = WormStraight2;
-                        }
+                            if(turningRight){
+                                turnangle = 180;
+                            }else{
+                                turnangle = -90;
+                            }
+                        }                }
+                    wrmPce.transform.rotation = Quaternion.Euler(0,0,turnangle);
+                    if(Random.Range(0f,1f)<0.5f){
+                        wrmPce.GetComponent<SpriteRenderer>().sprite = WormCorner1;
+                    }else{
+                        wrmPce.GetComponent<SpriteRenderer>().sprite = WormCorner2;
+                    }
+                }else{
+                    if(Random.Range(0f,1f)<0.5f){
+                        wrmPce.GetComponent<SpriteRenderer>().sprite = WormStraight1;
+                    }else{
+                        wrmPce.GetComponent<SpriteRenderer>().sprite = WormStraight2;
                     }
                 }
             }
-            RayAndDestroyBlocks();
-            cornering=false;
-            // wrmPce
-            transform.position += (Vector3) facingDirection*DistanceToMove;
-            cameFromDirection = facingDirection*-1;
+        }
+        RayAndDestroyBlocks();
+        cornering=false;
+        transform.position += (Vector3) facingDirection*DistanceToMove;
+        cameFromDirection = facingDirection*-1;
+    }
+
+
+    private void UpdateWormDirection()
+    {
+        if (Mathf.Abs(lastAngle.y) > Mathf.Abs(lastAngle.x))
+        {
+            cornering = !lastUpwards;
+            lastUpwards = true;
+            if (lastAngle.y < 0.01f)
+            {
+                RotateSprites(180);
+            }
+            else
+            {
+                RotateSprites(0);
+            }
+        }
+        else
+        {
+            cornering = lastUpwards;
+            lastUpwards = false;
+            if (lastAngle.x < 0f)
+            {
+                RotateSprites(90);
+                SpriteFlip(true);
+            }
+            else
+            {
+                RotateSprites(-90);
+                SpriteFlip(false);
+            }
+        }
+
+        if (cornering)
+        {
+            PlayTurningSound();
+            DetermineTurningDirection();
         }
     }
+
+    private void PlayTurningSound()
+    {
+        if (tempAudio != null)
+        {
+            GameObject qp = Instantiate(tempAudio, transform.position, Quaternion.identity);
+            qp.GetComponent<PlayAudioAndDelete>().clip = turningSound;
+            qp.GetComponent<AudioSource>().pitch += Random.Range(-0.15f, 0.15f);
+        }
+    }
+
+    private void DetermineTurningDirection()
+    {
+        if (Mathf.Abs(-1 * cameFromDirection.y) > Mathf.Abs(-1 * cameFromDirection.x))
+        {
+            if (lastAngle.x > 0)
+            {
+                turningRight = -1 * cameFromDirection.y > 0;
+            }
+            else
+            {
+                turningRight = -1 * cameFromDirection.y < 0;
+            }
+        }
+        else
+        {
+            if (lastAngle.y > 0)
+            {
+                turningRight = -1 * cameFromDirection.x < 0;
+            }
+            else
+            {
+                turningRight = -1 * cameFromDirection.x > 0;
+            }
+        }
+    }
+
     private void RayAndDestroyBlocks(){
         Vector3 angledStartPos = DistanceToMove/2 * transform.GetChild(0).right;
         Vector3 StartRayOffset = 0.05f* -transform.GetChild(0).up;

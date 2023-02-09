@@ -18,6 +18,8 @@ Shader "Custom/PixelColors" {
         _Color5in ("Color In 5", Color) = (1,1,1,1)
         _Color5out ("Color Out 5", Color) = (1,1,1,1)
         _ReplaceColorCutoff("Color Replace Threshold", float) = 0
+        [MaterialToggle] _Flashing ("Flashing", Float) = 0
+        _FlashBrightness ("Flash Brightness", Float) = 8
         [MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
     }
     SubShader
@@ -70,6 +72,8 @@ Shader "Custom/PixelColors" {
             fixed4 _Color5in;
             fixed4 _Color5out;
             float _ReplaceColorCutoff;
+            float _Flashing;
+            float _FlashBrightness;
             
             v2f vert(appdata_t IN)
             {
@@ -93,6 +97,9 @@ Shader "Custom/PixelColors" {
                 texColor = all(texColor + _ReplaceColorCutoff >= _Color3in && texColor - _ReplaceColorCutoff <= _Color3in) ? _Color3out : texColor;
                 texColor = all(texColor + _ReplaceColorCutoff >= _Color4in && texColor - _ReplaceColorCutoff <= _Color4in) ? _Color4out : texColor;
                 texColor = all(texColor + _ReplaceColorCutoff >= _Color5in && texColor - _ReplaceColorCutoff <= _Color5in) ? _Color5out : texColor;
+
+                if (_Flashing == 1)
+                    texColor = texColor * float4(_FlashBrightness, _FlashBrightness, _FlashBrightness, _FlashBrightness);
 
                 return texColor * _ColorTint; //apply the tint
             }

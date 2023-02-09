@@ -12,10 +12,6 @@ public class ControllerManager : MonoBehaviour
     private GameObject[] oldTerrain,oldTerrain1;
     [SerializeField] private GameObject newTerrain, CoverTerrain;
     private GameObject coverTerrainInstance;
-    void Start()
-    {
-
-    }
 
     void FixedUpdate()
     {

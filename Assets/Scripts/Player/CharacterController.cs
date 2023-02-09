@@ -94,14 +94,14 @@ public class CharacterController : MonoBehaviour
         }
         if(CanMove){
             //Movement
-            if(countJumpTime == false){
+            if(!countJumpTime){
                 if(rb2D.velocity.y < maxAirVelocity){
                     if(jumped){
                         jumped=false;
                     }
                 }
             }
-            if(onGround == true){
+            if(onGround){
                 SidewaysMovement(sidewaysForce);
                 DelayWallJump=false;
             }else{
@@ -131,7 +131,7 @@ public class CharacterController : MonoBehaviour
                                 Vector3 brakeVelocity = Vector2.down * -brakeSpeed/2 * rb2D.mass * rb2D.gravityScale;  // make the brake Vector3 value                            
                                 rb2D.AddForce(-brakeVelocity);  // apply opposing brake force
                             }
-                            if(wallOnLeft &&!wallOnRight){
+                            if(wallOnLeft && !wallOnRight){
                                 rb2D.AddForce(Vector2.left*wallPerpendicular);
                             }
                             if(wallOnRight&& !wallOnLeft){

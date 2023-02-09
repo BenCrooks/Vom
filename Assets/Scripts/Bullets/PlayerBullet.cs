@@ -16,18 +16,17 @@ public class PlayerBullet : MonoBehaviour
     [SerializeField]private GameObject quickPlayAudio;
     [SerializeField] private AudioClip[] clip;
     [SerializeField] private float screenShakeTime = 0.19f;
+    private Rigidbody2D rb2d;
 
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody2D>().AddForce(DirectionForce);
+        rb2d = GetComponent<Rigidbody2D>();
+        rb2d.AddForce(DirectionForce);
         Cam = Camera.main.gameObject;
         transform.Find("Particle System").GetComponent<ParticleSystem>().startColor = ParticleCol;
         if(ScreenShakeManager==null){
             ScreenShakeManager = GameObject.Find("ScreenShakeManager");
-        }
-        if(ScreenShakeManager==null){
-            print("CANNOT FIND SCREEN SHAKE MANAGER");
         }
     }
     private void Update() {
@@ -35,13 +34,13 @@ public class PlayerBullet : MonoBehaviour
         if(LifeTimer> LifeTime){
             Destroy(this.gameObject);
         }
-        if(GetComponent<Rigidbody2D>()!=null){
-            float speed = Vector3.Magnitude (GetComponent<Rigidbody2D>().velocity);  // test current object speed
+    if (rb2d != null){
+            float speed = Vector3.Magnitude (rb2d.velocity);  // test current object speed
             if(speed > maxSpeed){
                 float brakeSpeed = speed - maxSpeed;  // calculate the speed decrease
-                Vector3 normalisedVelocity = GetComponent<Rigidbody2D>().velocity.normalized;
+                Vector3 normalisedVelocity = rb2d.velocity.normalized;
                 Vector3 brakeVelocity = normalisedVelocity * brakeSpeed;  // make the brake Vector3 value
-                GetComponent<Rigidbody2D>().AddForce(-brakeVelocity);  // apply opposing brake force
+                rb2d.AddForce(-brakeVelocity);  // apply opposing brake force
             }
         }
     }
@@ -54,12 +53,12 @@ public class PlayerBullet : MonoBehaviour
                     damageable.Damage(damage,Shooter);
                     if(col.gameObject.tag == "Player"){
                         if(ScreenShakeManager!=null){
-                            if(GetComponent<Rigidbody2D>()!=null){
-                                Vector2 vel = GetComponent<Rigidbody2D>().velocity.normalized;
+                            if(rb2d!=null){
+                                Vector2 vel = rb2d.velocity.normalized;
                                 ScreenShakeManager.GetComponent<ManageScreenShakeObjects>().ShakeAll(screenShakeTime,vel);
                             }
                         }
-                        Destroy(this.gameObject);
+                        Destroy(gameObject);
                     }else{
                         if(quickPlayAudio!=null){
                             GameObject qp = Instantiate(quickPlayAudio,transform.position,Quaternion.identity);
@@ -69,7 +68,6 @@ public class PlayerBullet : MonoBehaviour
                         }
                     }
                 }
-                // Cam.GetComponent<CameraPanAfterPlayer>().CameraShake(0.03f,0.05f);
             }
         }
     }

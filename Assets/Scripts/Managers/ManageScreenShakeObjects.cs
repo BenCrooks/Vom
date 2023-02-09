@@ -16,12 +16,12 @@ public class ManageScreenShakeObjects : MonoBehaviour
     }
     private void Update() {
         if(isShaking){
+            shakeTimer+=Time.deltaTime;
             if(shakeTimer>shakeDuration){
                 shakeTimer =0;
                 isShaking=false;
                 transform.position = startPos;
             }else{
-                shakeTimer+=Time.deltaTime;
                 transform.position = startPos + (shakeDirection*shakeDistance* Mathf.Sin((shakeTimer*shakeLapses)/shakeDuration*Mathf.PI));
             }
         }

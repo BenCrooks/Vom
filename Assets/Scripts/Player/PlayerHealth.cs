@@ -9,7 +9,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable<float,GameObject>,IKillab
     public float startHealth;
     private Rigidbody2D rb;
     private Camera cam;
-
     public bool dead=false;
     [SerializeField] public SpriteRenderer[] sprites;
     [SerializeField] private float knockbackForce=1000, KnockUpForce=300;
@@ -17,17 +16,20 @@ public class PlayerHealth : MonoBehaviour, IDamageable<float,GameObject>,IKillab
     [SerializeField] private float ImmuneTime = 0.5f;
     private float ImmuneTimer;
     public bool immune;
-    [SerializeField] private Material flashMateral;
     private Material ownMaterial;
     [SerializeField] private AudioSource AudioSrc;
     [SerializeField] private AudioClip HurtSound, DieSound;
     [HideInInspector] public GameObject HealthUI;
+    [SerializeField] private float flashBrightness=8;
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
         cam = Camera.main;
         startHealth = Health;
         ownMaterial = transform.GetChild(0).GetComponent<SpriteRenderer>().material;
+        foreach(SpriteRenderer spr in sprites){
+            ownMaterial.SetFloat("Flash Brightness", flashBrightness);
+        }
     }
     private void Update() {
         if(immune){
@@ -62,7 +64,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable<float,GameObject>,IKillab
             transform.position = Respawner.transform.position;
             GetComponent<CharacterController>().CanMove = false;
             GetComponent<AimController>().CanShoot = false;
-            // Respawner.GetComponent<Respawner>().WaitAndRelease();
         }else{
             dead = true;
             GetComponent<AimController>().CanShoot = false;
@@ -73,10 +74,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable<float,GameObject>,IKillab
             pm.GetComponent<PlayerManager>().InGamePlayerCount -= 1;
             if(pm.GetComponent<PlayerManager>().InGamePlayerCount == 1){
                 pm.GetComponent<PlayerManager>().VictoriousPlayer = hitMe;
-            }
-            // Destroy(this.gameObject);
-            // gameObject.SetActive(false);
-            
+            } 
         }
     }
     public void ResetPlayerHealth(){
@@ -116,27 +114,27 @@ public class PlayerHealth : MonoBehaviour, IDamageable<float,GameObject>,IKillab
 
     IEnumerator damageFlash(){
         foreach(SpriteRenderer spr in sprites){
-            spr.material = flashMateral;
+            ownMaterial.SetFloat("_Flashing", 1);
         }
         yield return new WaitForSeconds(ImmuneTime*0.5f);
         foreach(SpriteRenderer spr in sprites){
-            spr.material = ownMaterial;
+            ownMaterial.SetFloat("_Flashing", 0);
         }
         yield return new WaitForSeconds(ImmuneTime*0.55f);
         foreach(SpriteRenderer spr in sprites){
-            spr.material = flashMateral;
+            ownMaterial.SetFloat("_Flashing", 1);
         }
         yield return new WaitForSeconds(ImmuneTime*0.85f);
         foreach(SpriteRenderer spr in sprites){
-            spr.material = ownMaterial;
+            ownMaterial.SetFloat("_Flashing", 0);
         }
         yield return new WaitForSeconds(ImmuneTime*0.9f);
         foreach(SpriteRenderer spr in sprites){
-            spr.material = flashMateral;
+            ownMaterial.SetFloat("_Flashing", 1);
         }
         yield return new WaitForSeconds(ImmuneTime);
         foreach(SpriteRenderer spr in sprites){
-            spr.material = ownMaterial;
+            ownMaterial.SetFloat("_Flashing", 0);
         }
     }
 
@@ -145,4 +143,5 @@ public class PlayerHealth : MonoBehaviour, IDamageable<float,GameObject>,IKillab
         AudioSrc.pitch = 1 + Random.Range(-pitchRandomizer,pitchRandomizer);
         AudioSrc.Play();
     }
+
 }

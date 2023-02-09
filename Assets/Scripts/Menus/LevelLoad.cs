@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoad : MonoBehaviour
 {
-
     public GameObject loadScreen;
     public void Play()
     {
@@ -23,6 +22,4 @@ public class LevelLoad : MonoBehaviour
         SceneManager.LoadScene("MainMenu");
 
     }
-
-
 }

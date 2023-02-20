@@ -6,7 +6,6 @@ public class TerrainSpawner : MonoBehaviour
 {
     [SerializeField] private int width, height;
     [SerializeField] private float slotSize = 0.36f;
-    private bool[] filledTerrainSlots;
     private bool[] filledBackgroundSlots;
     //positioning of slots will work as follows (the same as text)
     //1,2,3,4,5...
@@ -15,11 +14,15 @@ public class TerrainSpawner : MonoBehaviour
     [SerializeField] private GameObject backgroundEmpty, background1x1, background2x2, background4x4, background6x6;
     //chance of spawn in %
     [SerializeField] private float chanceOfSpawnEmpty, chanceOfSpawn1x1, chanceOfSpawn2x2, chanceOfSpawn4x4, chanceOfSpawn6x6;
+    [SerializeField] private bool[] canSpawnMoreThanOne;
+    [SerializeField] private float[] chanceOfSpawning;
+    [SerializeField] private GameObject[] Terrain;
+    private LayerMask lyrGround;
 
     // Start is called before the first frame update
     void Start()
     {
-        filledTerrainSlots = new bool[width*height];
+        lyrGround = LayerMask.NameToLayer("Terrain");
         filledBackgroundSlots = new bool[width*height];
         GenerateBackground();
     }
@@ -78,6 +81,45 @@ public class TerrainSpawner : MonoBehaviour
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    private void GenerateTerrain(){
+        float chanceSpawnTotal=0;
+        for(int c =0; c< chanceOfSpawning.Length;c++){
+            chanceSpawnTotal+=chanceOfSpawning[c];
+        }
+        for(int i =1; i<width;i++)
+        {   
+            for(int j =1; j<height;j++)  
+            {
+                Vector2 pos = new Vector2((i-width/2)*slotSize,(height/2-j)*slotSize);
+                RaycastHit2D hitOrigin = Physics2D.Raycast(pos, -Vector2.up,0.1f, lyrGround);
+                if(hitOrigin.collider==null){
+                    bool objInTheWay = false;
+                    int RandomTerrainObj = -1;
+                    float tempChanceToSpawnCounter=0;
+                    float percentChanceTerItem = Random.Range(0,chanceSpawnTotal);
+                    for(int c =0; c< chanceOfSpawning.Length;c++){
+                        tempChanceToSpawnCounter += chanceOfSpawning[c];
+                        if(tempChanceToSpawnCounter > percentChanceTerItem){
+                            RandomTerrainObj = c-1;
+                        }
+                    }
+                    GameObject spawnTerrain = Terrain[RandomTerrainObj];
+                    foreach(Transform child in spawnTerrain.transform){
+                        RaycastHit2D hit = Physics2D.Raycast(child.position, -Vector2.up,0.1f, lyrGround);
+                        if(hit.collider!=null){
+                            objInTheWay = true;
+                        }
+                    }
+                    if(!objInTheWay){
+                        Instantiate(spawnTerrain,pos,Quaternion.identity);
+                    }else{
+                        j-=1;
                     }
                 }
             }

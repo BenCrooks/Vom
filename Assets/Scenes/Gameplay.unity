@@ -864,7 +864,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &186410506
 Transform:
   m_ObjectHideFlags: 0
@@ -2567,7 +2567,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &755208181
 Transform:
   m_ObjectHideFlags: 0
@@ -6188,6 +6188,18 @@ MonoBehaviour:
   chanceOfSpawn2x2: 8
   chanceOfSpawn4x4: 6
   chanceOfSpawn6x6: 2
+  TerrainOneOf:
+  - {fileID: 8898298098865623622, guid: cc5767205e0f69543947e844428d7a4a, type: 3}
+  - {fileID: 8898298098865623622, guid: 0715dc1176c71664fa9b699dde0b6b44, type: 3}
+  - {fileID: 8898298098865623622, guid: cffc89e6eaa4c0e45982a0e43467c6a6, type: 3}
+  - {fileID: 8898298098865623622, guid: cffc89e6eaa4c0e45982a0e43467c6a6, type: 3}
+  - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
+  - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
+  TerrainOrgainic1: []
+  TerrainOrgainic2: []
+  TerrainOrgainic3: []
+  terrainFiller: []
+  TerrainSpine: {fileID: 8898298098865623622, guid: a41c62dd142dd1148b27ddec36cd3083, type: 3}
 --- !u!4 &1719823030
 Transform:
   m_ObjectHideFlags: 0
@@ -18190,7 +18202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4082472669450893326
 Transform:
   m_ObjectHideFlags: 0

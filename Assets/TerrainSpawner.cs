@@ -15,7 +15,7 @@ public class TerrainSpawner : MonoBehaviour
     [SerializeField] private GameObject backgroundEmpty, background1x1, background2x2, background4x4, background6x6;
     //chance of spawn in %
     [SerializeField] private float chanceOfSpawnEmpty, chanceOfSpawn1x1, chanceOfSpawn2x2, chanceOfSpawn4x4, chanceOfSpawn6x6;
-    [SerializeField] private GameObject[] TerrainOneOf, TerrainOrgainic1,TerrainOrgainic2,BoneTerrain,terrainFiller;
+    [SerializeField] private GameObject[] TerrainOneOf, TerrainIntestine1Corner,TerrainIntestine1Straight,TerrainIntestine2Corner, TerrainIntestine2Straight,BoneTerrain,terrainFiller;
     [SerializeField] private GameObject TerrainSpine, cartilageTerrain, cartilageCornerTerrain;
     private LayerMask lyrGround;
     private int numberOfLoopsBeforeFail = 8,numberOfLoopsBeforeFailCounter;
@@ -82,6 +82,8 @@ public class TerrainSpawner : MonoBehaviour
         SpawnOneOfTerrain();
         SpawnSpineTerrain();
         SpawnBones();
+        SpawnIntestine(TerrainIntestine1Corner,TerrainIntestine1Straight);
+        SpawnIntestine(TerrainIntestine2Corner,TerrainIntestine2Straight);
         // FillRemainingTerrain();
     }
 
@@ -130,15 +132,9 @@ public class TerrainSpawner : MonoBehaviour
             if(horizontal){
                 hit = Physics2D.RaycastAll(skullPos + new Vector3(0,-slotSize/2+offset*offsetDirection*slotSize,0), new Vector2(left?1:-1,0), width*slotSize, lyrGround);
                 hit1 = Physics2D.RaycastAll(skullPos + new Vector3(0,slotSize/2+offset*offsetDirection*slotSize,0), new Vector2(left?1:-1,0), width*slotSize, lyrGround);
-                // Debug.DrawRay(skullPos + new Vector3(0,-slotSize/2+offset*offsetDirection*slotSize,0),new Vector2(left?1:-1,0),Color.red);
-                // Debug.DrawRay(skullPos + new Vector3(0,slotSize/2+offset*offsetDirection*slotSize,0),new Vector2(left?1:-1,0),Color.red);
-                // Debug.DrawLine(skullPos + new Vector3(0,-slotSize/2+offset*offsetDirection*slotSize,0),skullPos + new Vector3(0,slotSize/2+offset*offsetDirection*slotSize,0));
             }else{
                 hit = Physics2D.RaycastAll(skullPos+ new Vector3(-slotSize/2+offset*offsetDirection*slotSize,0,0), new Vector2(0,up?1:-1), height*slotSize, lyrGround);
                 hit1 = Physics2D.RaycastAll(skullPos+ new Vector3(slotSize/2+offset*offsetDirection*slotSize,0,0), new Vector2(0,up?1:-1), height*slotSize, lyrGround);
-                // Debug.DrawRay(skullPos+ new Vector3(-slotSize/2+offset*offsetDirection*slotSize,0,0),new Vector2(0,up?1:-1),Color.red);
-                // Debug.DrawRay(skullPos+ new Vector3(slotSize/2+offset*offsetDirection*slotSize,0,0),new Vector2(0,up?1:-1),Color.red);
-                // Debug.DrawLine(skullPos+ new Vector3(-slotSize/2+offset*offsetDirection*slotSize,0,0),skullPos+ new Vector3(slotSize/2+offset*offsetDirection*slotSize,0,0));
             }
             bool tempFoundSpace = true;
             for(int i=0;i<hit.Length;i++){
@@ -176,8 +172,6 @@ public class TerrainSpawner : MonoBehaviour
                     {
                         RaycastHit2D hit3 = Physics2D.Raycast( pos1+new Vector3(horizontal?left?-1:1:0,horizontal?0:up?-1:1)*0.1f, new Vector2(horizontal?left?1:-1:0,horizontal?0:up?-1:1), 0.1f, lyrGround);
                         RaycastHit2D hit4 = Physics2D.Raycast( pos2+new Vector3(horizontal?left?-1:1:0,horizontal?0:up?-1:1)*0.1f, new Vector2(horizontal?left?1:-1:0,horizontal?0:up?-1:1), 0.1f, lyrGround);
-                        // Debug.DrawLine(pos1+(new Vector3(horizontal?left?-1:1:0,horizontal?0:up?-1:1)*0.1f),pos1+(new Vector3(horizontal?left?1:-1:0,horizontal?0:up?-1:1)*0.2f));
-                        // Debug.DrawLine(pos2+(new Vector3(horizontal?left?-1:1:0,horizontal?0:up?-1:1)*0.1f),pos2+(new Vector3(horizontal?left?1:-1:0,horizontal?0:up?-1:1)*0.2f));
                         if(hit3.collider==null&&hit4.collider==null){
                             Instantiate(TerrainSpine,spawnPos,Quaternion.Euler(0,0,horizontal?left?90:-90:up?180:0));
                         }
@@ -283,11 +277,186 @@ public class TerrainSpawner : MonoBehaviour
         return spawnPosNu;
     }
 
+    private void SpawnIntestine(GameObject[] IntestineCorners, GameObject[] IntestineStraight){
+        int StartPos = Random.Range(width+EdgeBufferForTerrain,filledTerrainSlots.Length-EdgeBufferForTerrain-width);
+        for(int e=-EdgeBufferForTerrain;e<EdgeBufferForTerrain;e++){
+            if((StartPos + e) % width==0){
+                StartPos+=e<0?e+EdgeBufferForTerrain:-e-EdgeBufferForTerrain;
+            }
+        }
+        Vector2 pos = GetPositionFromArrayUnit(StartPos);
+
+        RaycastHit2D rayInitial1 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
+        RaycastHit2D rayInitial2 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
+        RaycastHit2D rayInitial3 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
+        RaycastHit2D rayInitial4 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
+        bool initailSetup = true;
+        int InitialFailSafe = 30;
+        int InitialFailSafeCounter =0;
+        while(initailSetup&&(rayInitial1.collider!=null||rayInitial2.collider!=null||rayInitial3.collider!=null||rayInitial4.collider!=null)){
+            InitialFailSafeCounter++;
+            if(InitialFailSafeCounter>InitialFailSafe){
+                initailSetup = false;
+            }
+            StartPos = Random.Range(width+EdgeBufferForTerrain,filledTerrainSlots.Length-EdgeBufferForTerrain-width);
+            for(int e=-EdgeBufferForTerrain;e<EdgeBufferForTerrain;e++){
+                if((StartPos + e) % width==0){
+                    StartPos+=e<0?e+EdgeBufferForTerrain:-e-EdgeBufferForTerrain;
+                }
+            }
+            pos = GetPositionFromArrayUnit(StartPos);
+            rayInitial1 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
+            rayInitial2 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
+            rayInitial3 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
+            rayInitial4 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
+        }
+        int length = Random.Range(30,50);
+        int spawnNumber = 4;
+        Vector3 startIntestine1 = pos + new Vector2(slotSize/2,slotSize/2);
+        Vector3 startIntestine2 = pos + new Vector2(slotSize/2,-slotSize/2);
+        Vector3 startIntestine3 = pos + new Vector2(-slotSize/2,-slotSize/2);
+        Vector3 startIntestine4 = pos + new Vector2(-slotSize/2,slotSize/2);
+        List<Vector3> allIntestines = new List<Vector3>();
+        allIntestines.Add(startIntestine1);
+        allIntestines.Add(startIntestine2);
+        allIntestines.Add(startIntestine3);
+        allIntestines.Add(startIntestine4);
+        bool doneSpawning = false;
+        int failsafe =30;
+        int failSafeCounter =0;
+        while (!doneSpawning)
+        {   
+            failSafeCounter++;
+            if(failSafeCounter>failsafe){
+                doneSpawning = true;
+            }
+            //get the two intestine pieces
+            int randomIntestine1 = Random.Range(0,allIntestines.Count-1);
+            int randomIntestine2 = randomIntestine1++;
+            if(randomIntestine2>allIntestines.Count-1){
+                randomIntestine2 = 0;
+            }
+            //ray perpendicular
+            bool horizontal = false;
+            if(allIntestines[randomIntestine1].x - allIntestines[randomIntestine2].x > 0){
+                horizontal = false;
+            }else if(allIntestines[randomIntestine1].y - allIntestines[randomIntestine2].y > 0){
+                horizontal = true;
+            }
+            bool canExpand = false;
+            bool invert = false;
+            Vector3 nextPos1 = allIntestines[randomIntestine1] + new Vector3(horizontal?slotSize:0,horizontal?0:slotSize,0);
+            Vector3 nextPos2 = allIntestines[randomIntestine2] + new Vector3(horizontal?slotSize:0,horizontal?0:slotSize,0);
+            RaycastHit2D ray = Physics2D.Raycast( nextPos1, horizontal?Vector2.right:Vector2.up, 0.1f, lyrGround);
+            RaycastHit2D ray1 = Physics2D.Raycast( nextPos2, horizontal?Vector2.right:Vector2.up, 0.1f, lyrGround);
+
+            //if empty spawn and expand into that area
+            if(ray.collider == null && ray1.collider == null && !EqualsV3(allIntestines,nextPos1) && !EqualsV3(allIntestines,nextPos2)){
+                canExpand = true;
+            }else{
+                Vector3 nextPos3 = allIntestines[randomIntestine1] + new Vector3(horizontal?-slotSize:0,horizontal?0:-slotSize,0);
+                Vector3 nextPos4 = allIntestines[randomIntestine2] + new Vector3(horizontal?-slotSize:0,horizontal?0:-slotSize,0);
+                if(!EqualsV3(allIntestines,nextPos3) && ! EqualsV3(allIntestines,nextPos4)){
+                    RaycastHit2D ray3 = Physics2D.Raycast( nextPos3, horizontal?Vector2.left:Vector2.down, 0.1f, lyrGround);
+                    RaycastHit2D ray4 = Physics2D.Raycast( nextPos4, horizontal?Vector2.left:Vector2.down, 0.1f, lyrGround);
+                    if(ray3.collider == null && ray4.collider == null){
+                        canExpand = true;
+                        invert = true;
+                    }
+                }
+            }
+            if(canExpand){
+                Vector3 intestine1 = allIntestines[randomIntestine1] + new Vector3(horizontal?invert?-slotSize:slotSize:0,!horizontal?invert?-slotSize:slotSize:0,0);
+                Vector3 intestine2 =  allIntestines[randomIntestine2] + new Vector3(horizontal?invert?-slotSize:slotSize:0,!horizontal?invert?-slotSize:slotSize:0,0);
+                Debug.DrawLine(allIntestines[randomIntestine1] + new Vector3(horizontal?invert?-slotSize:slotSize:0,!horizontal?invert?-slotSize:slotSize:0,0),allIntestines[randomIntestine1] + new Vector3(horizontal?invert?-slotSize:slotSize:0,!horizontal?invert?-slotSize:slotSize:0,0)+new Vector3(0.1f, 0.1f,0),Color.red);
+                Debug.DrawLine(allIntestines[randomIntestine2] + new Vector3(horizontal?invert?-slotSize:slotSize:0,!horizontal?invert?-slotSize:slotSize:0,0),allIntestines[randomIntestine2] + new Vector3(horizontal?invert?-slotSize:slotSize:0,!horizontal?invert?-slotSize:slotSize:0,0)+new Vector3(0.1f, 0.1f,0),Color.green);
+                // add those new intestine pieces into the correct point of the array
+                allIntestines.Insert(randomIntestine1,intestine1);
+                allIntestines.Insert(randomIntestine1,intestine2);
+                spawnNumber +=2;
+                if(spawnNumber >= length){
+                    doneSpawning = true;
+                }
+            }
+        }
+        InitializeIntestines(allIntestines, IntestineCorners, IntestineStraight);
+    }
+
+    private bool EqualsV3(List<Vector3> V3List, Vector3 V3, float margin = 0.005f)
+    {
+        for(int i=0; i< V3List.Count-1;i++){
+            if(Mathf.Abs(V3List[i].x - V3.x) < margin && Mathf.Abs(V3List[i].y - V3.y) < margin){
+                return true;
+            }
+        }
+        return false;
+    }
+    private void InitializeIntestines(List<Vector3> intestines, GameObject[] IntestineCorners, GameObject[] IntestineStraight){
+        for(int i =0; i<intestines.Count;i++){
+            float margin = 0.01f;
+            int iMin = i-1;
+            int iMax = i+1;
+            if(iMin<0){
+                iMin = intestines.Count-1;
+            }
+            if(iMax>intestines.Count-1)
+            {
+                iMax=0;
+            }
+            Debug.DrawLine(intestines[iMin], intestines[i]);
+            if(intestines[iMin].x == intestines[iMax].x){
+                //straight horizontally
+                Instantiate(IntestineStraight[Random.Range(0,IntestineStraight.Length)],intestines[i],Quaternion.Euler(0,0,intestines[iMin].y > intestines[iMax].y?0:180));
+            }else if(intestines[iMin].y == intestines[iMax].y){
+                //straight vertically
+                Instantiate(IntestineStraight[Random.Range(0,IntestineStraight.Length)],intestines[i],Quaternion.Euler(0,0,intestines[iMin].x > intestines[iMax].x?270:90));
+            }else if(intestines[iMin].y > intestines[iMax].y){
+                if(intestines[iMin].x > intestines[iMax].x){
+                    //curve right to down || up to left
+                    if(Mathf.Abs(intestines[i].x - intestines[iMax].x) < margin){
+                        //aligned with x2
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(0,180,90));
+                    }else{
+                        //aligned with x1
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(0,0,0));
+                    }
+                }else{
+                    //curve left to down || up to right
+                    if(Mathf.Abs(intestines[i].x - intestines[iMax].x) < margin){
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(0,0,90));
+                    }else{
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(0,180,0));
+                    }
+                }
+            } else {
+                if(intestines[iMin].x > intestines[iMax].x){
+                    //curve right to up || down to left
+                    if(Mathf.Abs(intestines[i].x - intestines[iMax].x) < margin){
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(0,0,270));
+                    }else{
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(0,180,180));
+                    }
+                }else{
+                    //curve left to up  || down to right
+                    if(Mathf.Abs(intestines[i].x - intestines[iMax].x) < margin){
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(180,0,90));
+                    }else{
+                        Instantiate(IntestineCorners[Random.Range(0,IntestineCorners.Length)],intestines[i],Quaternion.Euler(0,0,180));
+                    }
+                }
+            }
+        }
+    }
+
     private void FillRemainingTerrain(){
         for(int i=0; i<filledTerrainSlots.Length;i++){
             if(filledTerrainSlots[i]==false){
-                Vector2 pos = GetPositionFromArrayUnit(i);
-                Instantiate(terrainFiller[Random.Range(0,terrainFiller.Length)],pos,Quaternion.identity);
+                Vector2 pos = GetPositionFromArrayUnit(i) + new Vector2(slotSize/2,slotSize/2);
+                Debug.DrawLine(pos, pos+new Vector2(0.1f,0.1f));
+                RaycastHit2D hit = Physics2D.Raycast(pos, new Vector2(1,1), 0.01f, lyrGround);
+                if(hit.collider == null){
+                    Instantiate(terrainFiller[Random.Range(0,terrainFiller.Length)],pos,Quaternion.Euler(0,0,Random90DegRotation()));
+                }
             }
         }
     }

@@ -6195,11 +6195,34 @@ MonoBehaviour:
   - {fileID: 8898298098865623622, guid: cffc89e6eaa4c0e45982a0e43467c6a6, type: 3}
   - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
   - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
-  TerrainOrgainic1: []
-  TerrainOrgainic2: []
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
+  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
+  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
+  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
+  - {fileID: 8898298098865623622, guid: 0715dc1176c71664fa9b699dde0b6b44, type: 3}
+  TerrainIntestine1Corner:
+  - {fileID: 2541266412299254545, guid: 3266cc818feef9d4384c303baf7a0388, type: 3}
+  - {fileID: 2541266412299254545, guid: 1b0a81be3a3829f4fbbecea332a669b2, type: 3}
+  TerrainIntestine1Straight:
+  - {fileID: 2541266412299254545, guid: 72b12f436489e0c4392d50012ecd223d, type: 3}
+  - {fileID: 2541266412299254545, guid: eed18cc4ff3ca434e84fbbed739fa7d4, type: 3}
+  TerrainIntestine2Corner:
+  - {fileID: 2541266412299254545, guid: 335bfb159a969c844aa2a126e2b8d3d1, type: 3}
+  TerrainIntestine2Straight:
+  - {fileID: 2541266412299254545, guid: a853544d3bb2b9345bd95ab4e650c1c0, type: 3}
+  - {fileID: 2541266412299254545, guid: 7ce8e1d172e2a1048bcc5969a8278cf4, type: 3}
   BoneTerrain:
   - {fileID: 8898298098865623622, guid: 20496364ab314ac429105cb7a1775a02, type: 3}
-  terrainFiller: []
+  terrainFiller:
+  - {fileID: 2541266412299254545, guid: 6cdc2c99c377fa74fbf2165c01b17295, type: 3}
+  - {fileID: 2541266412299254545, guid: 88bb243dea52e3a4ca71280b9584a92e, type: 3}
+  - {fileID: 2541266412299254545, guid: d8f848b1a7991e245a678408c5e89923, type: 3}
+  - {fileID: 2541266412299254545, guid: 5b2c83727c15bb54981e969eabc9588e, type: 3}
+  - {fileID: 2541266412299254545, guid: c1f67e3e841b662418f91e64d92ae4c8, type: 3}
+  - {fileID: 2541266412299254545, guid: e20ed949cb0d38546aca8d38dde5d6be, type: 3}
   TerrainSpine: {fileID: 8898298098865623622, guid: a41c62dd142dd1148b27ddec36cd3083, type: 3}
   cartilageTerrain: {fileID: 8898298098865623622, guid: a9948251ff2c9554d9c504695cb65b59, type: 3}
   cartilageCornerTerrain: {fileID: 8898298098865623622, guid: 087ec2a2fc36ba14bb94ed7cd3bdf2f7, type: 3}

@@ -203,9 +203,9 @@ public class TerrainSpawner : MonoBehaviour
     }
 
     private void SpawnBones(){
-        for(int a=0;a<2;a++){
+        for(int a=0;a<3;a++){
             float randomRotationStart = Random90DegRotation();
-            int spawnPos = Random.Range(width+EdgeBufferForTerrain,filledTerrainSlots.Length-EdgeBufferForTerrain-width);
+            int spawnPos = Random.Range(width+EdgeBufferForTerrain*2,filledTerrainSlots.Length-EdgeBufferForTerrain*2-width);
             int randomBone = Random.Range(0,BoneTerrain.Length-1);
             GameObject chosenBone = Instantiate(BoneTerrain[randomBone],GetPositionFromArrayUnit(spawnPos),Quaternion.Euler(0,0,randomRotationStart));
             CheckAllSlotsEmptyAndRepeat(chosenBone);
@@ -217,38 +217,41 @@ public class TerrainSpawner : MonoBehaviour
                 randomBone = Random.Range(0,BoneTerrain.Length-1);
                 randomRotationStart = Random90DegRotation();
                 Vector3 spawnPosNu = SetBoneOffset(parTrans, randomRotationStart);
-                GameObject nuBone = Instantiate(BoneTerrain[randomBone],spawnPosNu,Quaternion.Euler(0,0,randomRotationStart));
-                while(!foundRotation){
-                    itteration++;
-                    if(itteration>=4){
-                        foundRotation = true;
-                        Destroy(nuBone);
-                        j = 100;
-                    }else{
-                        float angleDif = DifferenceInAngle(parTrans.eulerAngles.z,nuBone.transform.eulerAngles.z);
-                        // if(angleDif > 20){
-                            foundRotation = ReturnCheckEmptySlots(nuBone); 
-                        // }
-                        if(!foundRotation){
-                            nuBone.transform.Rotate(0,0,90);
-                            float zRot = nuBone.transform.eulerAngles.z;
-                            spawnPosNu = SetBoneOffset(parTrans, zRot);
+                if(spawnPosNu.y<height*slotSize/2 && spawnPosNu.y>-height*slotSize/2 && spawnPosNu.x<width*slotSize/2 && spawnPosNu.x>-width*slotSize/2)
+                {
+                    GameObject nuBone = Instantiate(BoneTerrain[randomBone],spawnPosNu,Quaternion.Euler(0,0,randomRotationStart));
+                    while(!foundRotation){
+                        itteration++;
+                        if(itteration>=4){
+                            foundRotation = true;
+                            Destroy(nuBone);
+                            j = 100;
                         }else{
-                            Vector3 GoopPos = (parTrans.position + (parTrans.up * (parTrans.childCount + 1) * slotSize));
-                            bool corner = false;
-                            bool invert = false;
-                            bool offset = false;
-                            if(angleDif<100 && angleDif>80){
-                                corner = true;
-                            }else if(angleDif<280 && angleDif>260){
-                                corner = true;
-                                invert = true;
-                            }else if(angleDif<190 && angleDif>170){
-                                corner = true;
-                                offset = true;
+                            float angleDif = DifferenceInAngle(parTrans.eulerAngles.z,nuBone.transform.eulerAngles.z);
+                            // if(angleDif > 20){
+                                foundRotation = ReturnCheckEmptySlots(nuBone); 
+                            // }
+                            if(!foundRotation){
+                                nuBone.transform.Rotate(0,0,90);
+                                float zRot = nuBone.transform.eulerAngles.z;
+                                spawnPosNu = SetBoneOffset(parTrans, zRot);
+                            }else{
+                                Vector3 GoopPos = (parTrans.position + (parTrans.up * (parTrans.childCount + 1) * slotSize));
+                                bool corner = false;
+                                bool invert = false;
+                                bool offset = false;
+                                if(angleDif<100 && angleDif>80){
+                                    corner = true;
+                                }else if(angleDif<280 && angleDif>260){
+                                    corner = true;
+                                    invert = true;
+                                }else if(angleDif<190 && angleDif>170){
+                                    corner = true;
+                                    offset = true;
+                                }
+                                Instantiate(!corner?cartilageTerrain:cartilageCornerTerrain, GoopPos + nuBone.transform.right*(offset?-slotSize:0), Quaternion.Euler(nuBone.transform.eulerAngles + new Vector3(0,0,invert?180:0)));
+                                parTrans = nuBone.transform;
                             }
-                            Instantiate(!corner?cartilageTerrain:cartilageCornerTerrain, GoopPos + nuBone.transform.right*(offset?-slotSize:0), Quaternion.Euler(nuBone.transform.eulerAngles + new Vector3(0,0,invert?180:0)));
-                            parTrans = nuBone.transform;
                         }
                     }
                 }

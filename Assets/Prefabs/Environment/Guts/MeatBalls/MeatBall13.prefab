@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3186177530848474643}
   - component: {fileID: 5221869678949536481}
   - component: {fileID: 5495868111071446290}
+  - component: {fileID: 4513709158011950356}
   m_Layer: 6
   m_Name: MeatBall13
   m_TagString: Terrain
@@ -77,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -2127384395
+  m_SortingLayer: 3
   m_SortingOrder: -8
   m_Sprite: {fileID: 21300000, guid: 75202d5b39eb98d4caa43927f146f4c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -217,6 +218,17 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
+--- !u!210 &4513709158011950356
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541266412299254545}
+  m_Enabled: 1
+  m_SortingLayerID: -2127384395
+  m_SortingLayer: 3
+  m_SortingOrder: 0
 --- !u!1 &4837984686087610866
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,9 +331,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: -7
+  m_SortingLayerID: -2127384395
+  m_SortingLayer: 3
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 629bb7cfb5d31ad42923d244a5b0165c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

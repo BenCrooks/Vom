@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3186177530848474643}
   - component: {fileID: 5221869678949536481}
   - component: {fileID: 4521365528365152610}
+  - component: {fileID: 5827267520210757590}
   m_Layer: 6
   m_Name: Intestine2Straight2
   m_TagString: Terrain
@@ -77,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 357308863
+  m_SortingLayer: 22
   m_SortingOrder: -7
   m_Sprite: {fileID: 21300000, guid: 4d756e52a6e3b2a4fb57949702891e82, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -217,6 +218,17 @@ SpriteMask:
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
+--- !u!210 &5827267520210757590
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2541266412299254545}
+  m_Enabled: 1
+  m_SortingLayerID: 357308863
+  m_SortingLayer: 22
+  m_SortingOrder: 0
 --- !u!1 &4837984686087610866
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,8 +331,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 357308863
+  m_SortingLayer: 22
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 21ada4802c8d63448bfa61e9f0160c59, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

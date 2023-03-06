@@ -1559,7 +1559,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &419262322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6191,18 +6191,25 @@ MonoBehaviour:
   TerrainOneOf:
   - {fileID: 8898298098865623622, guid: cc5767205e0f69543947e844428d7a4a, type: 3}
   - {fileID: 8898298098865623622, guid: 0715dc1176c71664fa9b699dde0b6b44, type: 3}
-  - {fileID: 8898298098865623622, guid: cffc89e6eaa4c0e45982a0e43467c6a6, type: 3}
-  - {fileID: 8898298098865623622, guid: cffc89e6eaa4c0e45982a0e43467c6a6, type: 3}
-  - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
-  - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
-  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
-  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
-  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
-  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
-  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
-  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
-  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
   - {fileID: 8898298098865623622, guid: 0715dc1176c71664fa9b699dde0b6b44, type: 3}
+  - {fileID: 8898298098865623622, guid: cffc89e6eaa4c0e45982a0e43467c6a6, type: 3}
+  - {fileID: 8898298098865623622, guid: cffc89e6eaa4c0e45982a0e43467c6a6, type: 3}
+  - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
+  - {fileID: 8898298098865623622, guid: 1493fdacbb408f840b2dfd14d0351e6e, type: 3}
+  - {fileID: 8898298098865623622, guid: 19d7b5e647745ba469aa19fb16026a82, type: 3}
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
+  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
+  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
+  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ee60bb0489d9ac540880fed3058451cf, type: 3}
+  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
+  - {fileID: 8898298098865623622, guid: ad33bbada069bf44f97d360fd41af397, type: 3}
+  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
+  - {fileID: 8898298098865623622, guid: 335af337a6fdf394ea23e08b0a4299c0, type: 3}
   TerrainIntestine1Corner:
   - {fileID: 2541266412299254545, guid: 3266cc818feef9d4384c303baf7a0388, type: 3}
   - {fileID: 2541266412299254545, guid: 1b0a81be3a3829f4fbbecea332a669b2, type: 3}
@@ -6223,6 +6230,9 @@ MonoBehaviour:
   - {fileID: 2541266412299254545, guid: 5b2c83727c15bb54981e969eabc9588e, type: 3}
   - {fileID: 2541266412299254545, guid: c1f67e3e841b662418f91e64d92ae4c8, type: 3}
   - {fileID: 2541266412299254545, guid: e20ed949cb0d38546aca8d38dde5d6be, type: 3}
+  - {fileID: 2541266412299254545, guid: 51a9da0cc534efd4184584a4a6f5ba7d, type: 3}
+  - {fileID: 2541266412299254545, guid: 7fc5ce6ee13e28149962ceb230364473, type: 3}
+  - {fileID: 2541266412299254545, guid: 86a3c7f674a9e1b40b92b816486cf7b9, type: 3}
   TerrainSpine: {fileID: 8898298098865623622, guid: a41c62dd142dd1148b27ddec36cd3083, type: 3}
   cartilageTerrain: {fileID: 8898298098865623622, guid: a9948251ff2c9554d9c504695cb65b59, type: 3}
   cartilageCornerTerrain: {fileID: 8898298098865623622, guid: 087ec2a2fc36ba14bb94ed7cd3bdf2f7, type: 3}
@@ -7221,7 +7231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &2134997331
 SpriteRenderer:
   m_ObjectHideFlags: 0

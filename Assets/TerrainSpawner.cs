@@ -29,7 +29,7 @@ public class TerrainSpawner : MonoBehaviour
         filledBackgroundSlots = new bool[width*height];
         filledTerrainSlots = new bool[width*height];
         GenerateBackground();
-        GenerateTerrain();
+        StartCoroutine(GenerateTerrain());
     }
 
     //____________________general functions____________________
@@ -76,25 +76,35 @@ public class TerrainSpawner : MonoBehaviour
         }
         return true;
     }
+
+    private int AccountForHorizontalEdge(int pos){
+        for(int e=-EdgeBufferForTerrain;e<EdgeBufferForTerrain;e++){
+            if((pos + e) % width==0){
+                pos+=e<0?e+EdgeBufferForTerrain:-e-EdgeBufferForTerrain;
+            }
+        }
+        return pos;
+    }
     //______________________Functionality____________________
 
-    private void GenerateTerrain(){
+    private IEnumerator GenerateTerrain(){
         SpawnOneOfTerrain();
+        yield return new WaitForSeconds(0);
         SpawnSpineTerrain();
+        yield return new WaitForSeconds(0);
         SpawnBones();
+        yield return new WaitForSeconds(0);
         SpawnIntestine(TerrainIntestine1Corner,TerrainIntestine1Straight);
+        yield return new WaitForSeconds(0);
         SpawnIntestine(TerrainIntestine2Corner,TerrainIntestine2Straight);
-        // FillRemainingTerrain();
+        yield return new WaitForSeconds(0);
+        FillRemainingTerrain();
     }
 
     private void SpawnOneOfTerrain(){
         for(int i=0; i<TerrainOneOf.Length;i++){
             int spawnPos = Random.Range(width+EdgeBufferForTerrain,filledTerrainSlots.Length-EdgeBufferForTerrain-width);
-            for(int e=-EdgeBufferForTerrain;e<EdgeBufferForTerrain;e++){
-                if((spawnPos + e) % width==0){
-                    spawnPos+=e<0?e+EdgeBufferForTerrain:-e-EdgeBufferForTerrain;
-                }
-            }
+            spawnPos = AccountForHorizontalEdge(spawnPos);
             if(filledTerrainSlots[spawnPos] != true){
                 Vector2 pos = GetPositionFromArrayUnit(spawnPos);
                 GameObject spawnTerrain = Instantiate( TerrainOneOf[i], pos, Quaternion.Euler( 0, Random.Range( 0, 2 ) * 180, Random90DegRotation() ));
@@ -172,7 +182,7 @@ public class TerrainSpawner : MonoBehaviour
                     {
                         RaycastHit2D hit3 = Physics2D.Raycast( pos1+new Vector3(horizontal?left?-1:1:0,horizontal?0:up?-1:1)*0.1f, new Vector2(horizontal?left?1:-1:0,horizontal?0:up?-1:1), 0.1f, lyrGround);
                         RaycastHit2D hit4 = Physics2D.Raycast( pos2+new Vector3(horizontal?left?-1:1:0,horizontal?0:up?-1:1)*0.1f, new Vector2(horizontal?left?1:-1:0,horizontal?0:up?-1:1), 0.1f, lyrGround);
-                        if(hit3.collider==null&&hit4.collider==null){
+                        if(hit3.collider==null && hit4.collider==null){
                             Instantiate(TerrainSpine,spawnPos,Quaternion.Euler(0,0,horizontal?left?90:-90:up?180:0));
                         }
                     }
@@ -279,17 +289,13 @@ public class TerrainSpawner : MonoBehaviour
 
     private void SpawnIntestine(GameObject[] IntestineCorners, GameObject[] IntestineStraight){
         int StartPos = Random.Range(width+EdgeBufferForTerrain,filledTerrainSlots.Length-EdgeBufferForTerrain-width);
-        for(int e=-EdgeBufferForTerrain;e<EdgeBufferForTerrain;e++){
-            if((StartPos + e) % width==0){
-                StartPos+=e<0?e+EdgeBufferForTerrain:-e-EdgeBufferForTerrain;
-            }
-        }
+        StartPos = AccountForHorizontalEdge(StartPos);
         Vector2 pos = GetPositionFromArrayUnit(StartPos);
 
-        RaycastHit2D rayInitial1 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
-        RaycastHit2D rayInitial2 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
-        RaycastHit2D rayInitial3 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
-        RaycastHit2D rayInitial4 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f);
+        RaycastHit2D rayInitial1 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
+        RaycastHit2D rayInitial2 = Physics2D.Raycast(pos + new Vector2(slotSize/2,-slotSize/2), Vector2.up, 0.1f,lyrGround);
+        RaycastHit2D rayInitial3 = Physics2D.Raycast(pos + new Vector2(-slotSize/2,-slotSize/2), Vector2.up, 0.1f,lyrGround);
+        RaycastHit2D rayInitial4 = Physics2D.Raycast(pos + new Vector2(-slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
         bool initailSetup = true;
         int InitialFailSafe = 30;
         int InitialFailSafeCounter =0;
@@ -299,16 +305,12 @@ public class TerrainSpawner : MonoBehaviour
                 initailSetup = false;
             }
             StartPos = Random.Range(width+EdgeBufferForTerrain,filledTerrainSlots.Length-EdgeBufferForTerrain-width);
-            for(int e=-EdgeBufferForTerrain;e<EdgeBufferForTerrain;e++){
-                if((StartPos + e) % width==0){
-                    StartPos+=e<0?e+EdgeBufferForTerrain:-e-EdgeBufferForTerrain;
-                }
-            }
+            StartPos = AccountForHorizontalEdge(StartPos);
             pos = GetPositionFromArrayUnit(StartPos);
             rayInitial1 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
-            rayInitial2 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
-            rayInitial3 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
-            rayInitial4 = Physics2D.Raycast(pos + new Vector2(slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
+            rayInitial2 = Physics2D.Raycast(pos + new Vector2(slotSize/2,-slotSize/2), Vector2.up, 0.1f,lyrGround);
+            rayInitial3 = Physics2D.Raycast(pos + new Vector2(-slotSize/2,-slotSize/2), Vector2.up, 0.1f,lyrGround);
+            rayInitial4 = Physics2D.Raycast(pos + new Vector2(-slotSize/2,slotSize/2), Vector2.up, 0.1f,lyrGround);
         }
         int length = Random.Range(30,50);
         int spawnNumber = 4;
@@ -326,13 +328,13 @@ public class TerrainSpawner : MonoBehaviour
         int failSafeCounter =0;
         while (!doneSpawning)
         {   
+            int randomIntestine1 = Random.Range(0,allIntestines.Count-1);
+            int randomIntestine2 = randomIntestine1++;
             failSafeCounter++;
             if(failSafeCounter>failsafe){
                 doneSpawning = true;
             }
             //get the two intestine pieces
-            int randomIntestine1 = Random.Range(0,allIntestines.Count-1);
-            int randomIntestine2 = randomIntestine1++;
             if(randomIntestine2>allIntestines.Count-1){
                 randomIntestine2 = 0;
             }
@@ -351,12 +353,12 @@ public class TerrainSpawner : MonoBehaviour
             RaycastHit2D ray1 = Physics2D.Raycast( nextPos2, horizontal?Vector2.right:Vector2.up, 0.1f, lyrGround);
 
             //if empty spawn and expand into that area
-            if(ray.collider == null && ray1.collider == null && !EqualsV3(allIntestines,nextPos1) && !EqualsV3(allIntestines,nextPos2)){
+            if(ray.collider == null && ray1.collider == null && !EqualsV3(allIntestines,nextPos1) && !EqualsV3(allIntestines,nextPos2) && (Mathf.Abs(nextPos1.x)<(width-4)*slotSize/2 && Mathf.Abs(nextPos1.y)<(height-4)*slotSize/2) && (Mathf.Abs(nextPos2.x)<(width-4)*slotSize/2 && Mathf.Abs(nextPos2.y)<(height-4)*slotSize/2)){
                 canExpand = true;
             }else{
                 Vector3 nextPos3 = allIntestines[randomIntestine1] + new Vector3(horizontal?-slotSize:0,horizontal?0:-slotSize,0);
                 Vector3 nextPos4 = allIntestines[randomIntestine2] + new Vector3(horizontal?-slotSize:0,horizontal?0:-slotSize,0);
-                if(!EqualsV3(allIntestines,nextPos3) && ! EqualsV3(allIntestines,nextPos4)){
+                if(!EqualsV3(allIntestines,nextPos3) && ! EqualsV3(allIntestines,nextPos4) && (Mathf.Abs(nextPos3.x)<(width-4)*slotSize/2 && Mathf.Abs(nextPos3.y)<(height-4) * slotSize/2) && (Mathf.Abs(nextPos4.x)<(width-4)*slotSize/2 && Mathf.Abs(nextPos4.y)<(height-4)*slotSize/2)){
                     RaycastHit2D ray3 = Physics2D.Raycast( nextPos3, horizontal?Vector2.left:Vector2.down, 0.1f, lyrGround);
                     RaycastHit2D ray4 = Physics2D.Raycast( nextPos4, horizontal?Vector2.left:Vector2.down, 0.1f, lyrGround);
                     if(ray3.collider == null && ray4.collider == null){

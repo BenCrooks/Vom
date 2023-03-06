@@ -50,3 +50,75 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: MeatBall1
+    uniqueID: 1382108273
+    locked: 0
+  - name: MeatBall2
+    uniqueID: 966061307
+    locked: 0
+  - name: MeatBall3
+    uniqueID: 2167582901
+    locked: 0
+  - name: MeatBall4
+    uniqueID: 4149622373
+    locked: 0
+  - name: MeatBall5
+    uniqueID: 2319606753
+    locked: 0
+  - name: MeatBall6
+    uniqueID: 1944269585
+    locked: 0
+  - name: Brain1
+    uniqueID: 861061649
+    locked: 0
+  - name: Brain2
+    uniqueID: 3695608041
+    locked: 0
+  - name: Brain3
+    uniqueID: 4193722517
+    locked: 0
+  - name: Sinue1
+    uniqueID: 2251036231
+    locked: 0
+  - name: Sinue2
+    uniqueID: 137814359
+    locked: 0
+  - name: Sinue3
+    uniqueID: 1084313827
+    locked: 0
+  - name: Ribs
+    uniqueID: 3189864005
+    locked: 0
+  - name: Bone
+    uniqueID: 2554825995
+    locked: 0
+  - name: Liver
+    uniqueID: 1305986337
+    locked: 0
+  - name: Kidney
+    uniqueID: 948884639
+    locked: 0
+  - name: Eye
+    uniqueID: 1989000235
+    locked: 0
+  - name: SpineBack
+    uniqueID: 3788975325
+    locked: 0
+  - name: Spine
+    uniqueID: 3994345019
+    locked: 0
+  - name: Skull
+    uniqueID: 3568080523
+    locked: 0
+  - name: Joint
+    uniqueID: 1337087061
+    locked: 0
+  - name: Joint2
+    uniqueID: 1623654719
+    locked: 0
+  - name: Intestine1
+    uniqueID: 357308863
+    locked: 0
+  - name: Intestine2
+    uniqueID: 110865297
+    locked: 0
